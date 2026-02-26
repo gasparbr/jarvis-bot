@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 from gtts import gTTS
 import asyncio
 import os
-from openai import OpenAI
+from groq import GROQ
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("GROQ_API_KEY"))
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
@@ -31,7 +31,7 @@ async def perguntar(ctx, *, pergunta):
     await ctx.send("Pensando...")
 
     resposta = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="llama3-8b-8192",
         messages=[
             {"role": "system", "content": "Você é Jarvis, um assistente inteligente, educado e amigável."},
             {"role": "user", "content": pergunta}
