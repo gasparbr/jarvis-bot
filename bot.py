@@ -22,13 +22,13 @@ async def entrar(ctx):
     if ctx.author.voice:
         channel = ctx.author.voice.channel
         await channel.connect()
-        await ctx.send("Jarvis conectado ao canal de voz.")
+        await ctx.send("Aura conectado ao canal de voz.")
     else:
         await ctx.send("Entre em um canal de voz primeiro.")
 
 @bot.command()
 async def perguntar(ctx, *, pergunta):
-    await ctx.send("Pensando...")
+    await ctx.send("Aura está Pensando...")
 
     resposta = client.chat.completions.create(
         model="llama3-8b-8192",
