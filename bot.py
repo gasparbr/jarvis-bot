@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from gtts import gTTS
 import asyncio
 import os
-from groq import GROQ
+from groq import Groq
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
