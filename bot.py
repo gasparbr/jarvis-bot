@@ -15,7 +15,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # carregar modelo de voz gratuito
-model = whisper.load_model("base")
+model = whisper.load_model("tiny")
 
 class AudioSink(discord.sinks.WaveSink):
     def __init__(self, ctx):
