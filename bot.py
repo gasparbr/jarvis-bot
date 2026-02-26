@@ -19,12 +19,24 @@ async def on_ready():
 
 @bot.command()
 async def entrar(ctx):
-    if ctx.author.voice:
-        channel = ctx.author.voice.channel
-        await channel.connect()
-        await ctx.send("Aura conectado ao canal de voz.")
-    else:
+    if not ctx.author.voice:
         await ctx.send("Entre em um canal de voz primeiro.")
+        return
+
+    channel = ctx.author.voice.channel
+
+    # Se já estiver conectado, desconecta primeiro
+    if ctx.voice_client:
+        await ctx.voice_client.disconnect()
+        await asyncio.sleep(1)
+
+    try:
+        await channel.connect(reconnect=True, timeout=60)
+        await ctx.send("Jarvis conectado ao canal de voz.")
+    except Exception:
+        await ctx.send("Tive dificuldade para conectar... tentando novamente.")
+        await asyncio.sleep(2)
+        await channel.connect(reconnect=True, timeout=60)
 
 @bot.command()
 async def perguntar(ctx, *, pergunta):
