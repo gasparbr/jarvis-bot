@@ -43,7 +43,7 @@ async def perguntar(ctx, *, pergunta):
     await ctx.send("Aura está Pensando...")
 
     resposta = client.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",
         messages=[
             {"role": "system", "content": "Você é Jarvis, um assistente inteligente, educado e amigável."},
             {"role": "user", "content": pergunta}
