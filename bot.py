@@ -8,7 +8,7 @@ from groq import Groq
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-client = OpenAI(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
