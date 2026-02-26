@@ -5,3 +5,4 @@ PyNaCl
 groq
 speechrecognition
 pyaudio
+openai-whisper
