@@ -6,7 +6,6 @@ import asyncio
 import os
 from groq import Groq
 import whisper
-import wave
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -15,10 +14,9 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# carregar whisper (modelo leve e grátis)
+# carregar modelo de voz gratuito
 model = whisper.load_model("base")
 
-# ----------- VOICE SINK -----------
 class AudioSink(discord.sinks.WaveSink):
     def __init__(self, ctx):
         super().__init__()
@@ -26,17 +24,15 @@ class AudioSink(discord.sinks.WaveSink):
 
     async def finished_callback(self, sink, channel):
         for user_id, audio in sink.audio_data.items():
-            filename = f"audio/{user_id}.wav"
+            filename = f"audio_{user_id}.wav"
             with open(filename, "wb") as f:
                 f.write(audio.file.getbuffer())
 
-            # TRANSCRIÇÃO
             result = model.transcribe(filename)
             pergunta = result["text"]
 
             await self.ctx.send(f"Você disse: {pergunta}")
 
-            # IA RESPONDE
             resposta = client.chat.completions.create(
                 model="llama-3.1-8b-instant",
                 messages=[
@@ -47,7 +43,6 @@ class AudioSink(discord.sinks.WaveSink):
 
             texto = resposta.choices[0].message.content
 
-            # TTS
             tts = gTTS(text=texto, lang="pt-br")
             tts.save("resposta.mp3")
 
@@ -73,7 +68,7 @@ async def entrar(ctx):
 
     channel = ctx.author.voice.channel
     await channel.connect()
-    await ctx.send("Jarvis entrou e está te ouvindo 👂")
+    await ctx.send("Jarvis entrou no canal 👂")
 
 
 @bot.command()
@@ -94,6 +89,5 @@ async def ouvir(ctx):
 
     await asyncio.sleep(10)
     vc.stop_recording()
-
 
 bot.run(TOKEN)
